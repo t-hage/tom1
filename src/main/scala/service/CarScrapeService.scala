@@ -25,38 +25,14 @@ class CarScrapeService(implicit systemModule: SystemModule) {
     val path = allCarsPath + pageConstant + page + extension
 
     val document: Document = Jsoup.connect(s"$host$subPath$path").get
-
     val carLinkElements: Elements = document.select(".models .col-4")
-    //
-    //    val carLinks: Array[String] = new Array(carLinkElements.size())
-    //
-    //
-    //    (0 until carLinkElements.size()).foreach((index)=>{
-    //      val fullLink = carLinkElements.get(index).select("a").attr("href")
-    //      val carPath = fullLink.replace(s"$host$subPath", "")
-    //      carLinks(index) = carPath
-    //    })
-    //
-    //    carLinks
-
     carLinkElements.asScala.map(_.select("a").attr("href").replace(s"$host$subPath", "")).toList
   }
 
   def getCarDetailPages(path: String): List[String] = {
     val document: Document = Jsoup.connect(s"$host$subPath$path").get
     val carDetailLinkElements: Elements = document.select(".types .col-6")
-
     carDetailLinkElements.asScala.map(_.select("a").attr("href").replace(s"$host$subPath", "")).toList
-
-    //    val carDetailLinks: Array[String] = new Array(carDetailLinkElements.size())
-    //
-    //    (0 until carDetailLinkElements.size()).foreach((index)=>{
-    //      val fullLink = carDetailLinkElements.get(index).select("a").attr("href")
-    //      val carPath = fullLink.replace(s"$host$subPath", "")
-    //      carDetailLinks(index) = carPath
-    //    })
-    //
-    //    carDetailLinks.toList
   }
 
   def getCarSpecs(path: String): CarSpecs = {
@@ -69,17 +45,17 @@ class CarScrapeService(implicit systemModule: SystemModule) {
     val fuelEngineMap = getSpecTableByHeading(document, TableHeading.FuelEngine).withDefaultValue("Unknown")
     val electricEngineMap = getSpecTableByHeading(document, TableHeading.ElectricEngine).withDefaultValue("Unknown")
     val performanceMap = getSpecTableByHeading(document, TableHeading.Performance).withDefaultValue("Unknown")
-    val chassisMap = getSpecTableByHeading(document, TableHeading.Chassis).withDefaultValue("Unknown")
-    val transmissionMap = getSpecTableByHeading(document, TableHeading.Transmission).withDefaultValue("Unknown")
-    val securityMap = getSpecTableByHeading(document, TableHeading.Security).withDefaultValue("Unknown")
-    val interiorMap = getSpecTableByHeading(document, TableHeading.Interior).withDefaultValue("Unknown")
-    val exteriorMap = getSpecTableByHeading(document, TableHeading.Exterior).withDefaultValue("Unknown")
-    val weightsMap = getSpecTableByHeading(document, TableHeading.Weights).withDefaultValue("Unknown")
-    val baggageCargoMap = getSpecTableByHeading(document, TableHeading.BaggageCargo).withDefaultValue("Unknown")
+//    val chassisMap = getSpecTableByHeading(document, TableHeading.Chassis).withDefaultValue("Unknown")
+//    val transmissionMap = getSpecTableByHeading(document, TableHeading.Transmission).withDefaultValue("Unknown")
+//    val securityMap = getSpecTableByHeading(document, TableHeading.Security).withDefaultValue("Unknown")
+//    val interiorMap = getSpecTableByHeading(document, TableHeading.Interior).withDefaultValue("Unknown")
+//    val exteriorMap = getSpecTableByHeading(document, TableHeading.Exterior).withDefaultValue("Unknown")
+//    val weightsMap = getSpecTableByHeading(document, TableHeading.Weights).withDefaultValue("Unknown")
+//    val baggageCargoMap = getSpecTableByHeading(document, TableHeading.BaggageCargo).withDefaultValue("Unknown")
     val exteriorSizesMap = getSpecTableByHeading(document, TableHeading.ExteriorSizes).withDefaultValue("Unknown")
-    val interiorSizesMap = getSpecTableByHeading(document, TableHeading.InteriorSizes).withDefaultValue("Unknown")
-    val comfortMap = getSpecTableByHeading(document, TableHeading.Comfort).withDefaultValue("Unknown")
-    val serviceWarranty = getSpecTableByHeading(document, TableHeading.ServiceWarranty).withDefaultValue("Unknown")
+//    val interiorSizesMap = getSpecTableByHeading(document, TableHeading.InteriorSizes).withDefaultValue("Unknown")
+//    val comfortMap = getSpecTableByHeading(document, TableHeading.Comfort).withDefaultValue("Unknown")
+//    val serviceWarranty = getSpecTableByHeading(document, TableHeading.ServiceWarranty).withDefaultValue("Unknown")
 
     val fullName = breadCrumbElements.get(3).text()
     val brand = breadCrumbElements.get(1).text()
@@ -118,7 +94,7 @@ class CarScrapeService(implicit systemModule: SystemModule) {
   }
 
   private def tryParseFloat(floatString: String): Float = {
-    "^[\\d,]+".r.findFirstIn(floatString).getOrElse("0").replace(",", ".").toFloat
+    "[\\d,]+".r.findFirstIn(floatString.replaceAll("\\.", "")).getOrElse("0").replace(",", ".").toFloat
   }
 
 }

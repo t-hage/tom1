@@ -24,15 +24,13 @@ case class CarSpecs(fullName: String,
                     avConsumption: Float,
                     energyLevel: EnergyLevel,
                     length: Float,
-                    specsMap: Map[String, String]) {
-
-
-}
+                    specsMap: Map[String, String])
 
 object CarSpecs{
   def toCarBody(carBody: String): CarBody = {
     carBody match{
       case "cabriolet" => CarBody.Cabriolet
+      case "suv/crossover" => CarBody.SUV
 
       case _ =>
         println(s"toCarBody could not parse for string $carBody")
