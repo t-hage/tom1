@@ -26,24 +26,71 @@ case class CarSpecs(fullName: String,
                     length: Float,
                     specsMap: Map[String, String]) {
 
+
+}
+
+object CarSpecs{
+  def toCarBody(carBody: String): CarBody = {
+    carBody match{
+      case "cabriolet" => CarBody.Cabriolet
+
+      case _ =>
+        println(s"toCarBody could not parse for string $carBody")
+        CarBody.Other
+    }
+  }
+
+  def toTransmission(transmission: String): Transmission = {
+    transmission match{
+      case "manual" => Transmission.Manual
+
+      case _ =>
+        println(s"toTransmission could not parse for string $transmission")
+        Transmission.Other
+    }
+  }
+
+  def toEngineType(engineType: String): EngineType = {
+    engineType match {
+      case "fuel engine" => EngineType.Petrol
+
+      case _ =>
+        println(s"toEngineType could not parse for string $engineType")
+        EngineType.Other
+    }
+  }
+
+  def toEnergyLevel(energyLevel: String): EnergyLevel = {
+    energyLevel match {
+      case "a" | "A" => EnergyLevel.A
+      case "b" | "B" => EnergyLevel.B
+      case "c" | "C" => EnergyLevel.C
+      case "d" | "D" => EnergyLevel.D
+      case "e" | "E" => EnergyLevel.E
+      case "f" | "F" => EnergyLevel.F
+      case _ =>
+        println(s"toEnergyLevel could not parse for string $energyLevel")
+        EnergyLevel.Unknown
+    }
+  }
 }
 
 object CarBody extends Enumeration {
   type CarBody = Value
-  val SUV, Convertible, Coupe, Hatchback, Sedan, PickUp, Wagon, MPV, Diesel, HybridElectric, Luxury, Other = Value
+  val SUV, Convertible, Cabriolet, Coupe, Hatchback, Sedan, PickUp, Wagon, MPV, Diesel, HybridElectric, Luxury, Other = Value
 }
 
 object Transmission extends Enumeration {
   type Transmission = Value
-  val Manual, Automatic = Value
+  val Manual, Automatic, Other = Value
 }
 
 object EngineType extends Enumeration {
   type EngineType = Value
-  val Petrol, Diesel, Electric, Hybrid = Value
+  val Petrol, Diesel, Electric, Hybrid, Other = Value
 }
 
 object EnergyLevel extends Enumeration {
   type EnergyLevel = Value
-  val A, B, C, D, E, F = Value
+  val A, B, C, D, E, F, Unknown = Value
 }
